@@ -16,6 +16,11 @@ df = pd.read_csv("C:\\Users\\Travis\\Desktop\\python_final_project\\cereal.csv")
 #Loads the data fetched from the .csv and loads it into the sqlite table in db, adds data if table already exists
 cereal_data = df.to_sql("cereal_data", con, if_exists = "replace", index = False)
 
+#inserts a dummy of row data for the purpose of creating a fake cereal with a rating of zero
+update = con.cursor()
+update.execute("insert into cereal_data values ('dummy_cereal', '', '', null, null, null, null, null, null, null, null, null, null, null, null, 0) ")
+update.close()
+#con.close()
 
 df1 = pd.read_sql_query("SELECT sugars, rating FROM cereal_data ORDER BY sugars ASC", con)
 
@@ -26,5 +31,7 @@ plt.title("Sugars vs Ratings")
 plt.ylabel("Ratings")
 plt.xlabel("Sugars")
 plt.show()
+
+print(pd.read_sql_query("SELECT * FROM cereal_data", con))
 
 
